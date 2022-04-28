@@ -1,0 +1,5 @@
+django
+djangorestframework
+psycopg2_binary
+python-decouple
+dj-config-url
