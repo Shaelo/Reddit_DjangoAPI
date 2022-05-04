@@ -10,3 +10,14 @@ def send_activation_email(code, email):
         'isalikharov@gmail.com',
         [email]
     )
+
+
+def send_activation_code(new_password, email):
+    msg = f'Ваш новый пароль"{new_password}" '
+
+    send_mail(
+        'Код для обновления пароля!',
+        msg,
+        'isalikharov@gmail.com',
+        [email]
+    )

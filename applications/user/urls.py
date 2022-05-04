@@ -7,4 +7,5 @@ urlpatterns = [
     path('activate/<uuid:activation_code>/', ActivateView.as_view()),
     path('login/', LoginView.as_view()),
     path('logout/', LogoutView.as_view()),
+    path('recovery/password/', RecoveryPasswordView.as_view()),
 ]

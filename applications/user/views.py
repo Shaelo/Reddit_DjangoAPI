@@ -57,3 +57,13 @@ class LogoutView(APIView):
             return Response('Вы успешно вышли из аккаунта')
         except:
             return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+class RecoveryPasswordView(APIView):
+
+
+    def post(self, request):
+        serializer = RecoveryPasswordSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.new_password()
+            return Response("Ваш новый пароль отправлен вам на почту")

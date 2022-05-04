@@ -14,10 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import path, include
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from django.conf import settings
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Reddit',
+        description='My Hakaton project',
+        default_version='v1',
+    ),
+    public=True,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('swagger/', schema_view.with_ui('swagger')),
     path('api/v1/user/', include('applications.user.urls')),
-    path('api/v1/post/', include('applications.post.urls'))
-]
+    path('api/v1/post/', include('applications.post.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

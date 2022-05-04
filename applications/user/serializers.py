@@ -1,7 +1,8 @@
 from django.contrib.auth import *
 from rest_framework import serializers
 from applications.user.models import Account
-from applications.user.send_mail import send_activation_email
+from applications.user.send_mail import send_activation_email, send_activation_code
+from django.utils.crypto import get_random_string
 
 User = get_user_model()
 
@@ -56,6 +57,25 @@ class LoginSerializer(serializers.Serializer):
 
                 attrs['user'] = user
                 return attrs
+
+
+class RecoveryPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate_email(self, email):
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Пользователь не найден')
+        return email
+
+    def new_password(self):
+        email = self.validated_data.get('email')
+        user = User.objects.get(email=email)
+        new_password = get_random_string(8)
+        user.set_password(new_password)
+        send_activation_code(new_password, email)
+        user.save()
+
+        return user
 
 
 class AccountSerializer(serializers.ModelSerializer):

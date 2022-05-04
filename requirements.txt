@@ -3,3 +3,6 @@ djangorestframework
 psycopg2_binary
 python-decouple
 dj-config-url
+pillow
+django-filter
+drf_yasg
